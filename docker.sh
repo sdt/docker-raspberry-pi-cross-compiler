@@ -4,7 +4,24 @@ USER=stephenthirlwall
 NAME=rpicc
 
 IMAGE=$USER/$NAME
-BUILD_PREFIX=/rpi/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf
+
+# Raspbian 32-bit
+BIN_PREFIX=arm-linux-gnueabihf
+BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian
+
+## Raspbian 64-bit
+#BIN_PREFIX=arm-linux-gnueabihf
+#BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian-x64
+#
+## Software-float GNU (not sure what this is really)
+#BIN_PREFIX=arm-bcm2708-linux-gnueabi
+#BIN_DIR=$BIN_PREFIX
+#
+## Hardware-float GNU (not sure what this is really)
+#BIN_PREFIX=arm-bcm2708hardfp-linux-gnueabi
+#BIN_DIR=$BIN_PREFIX
+
+BUILD_PREFIX=/rpi/arm-bcm2708/$BIN_DIR/bin/$BIN_PREFIX
 
 CMD=$1 ; shift
 
