@@ -11,3 +11,6 @@ RUN curl -L https://github.com/raspberrypi/tools/tarball/master | \
         tar --strip-components 1 -xzf -
 
 WORKDIR /build
+ENTRYPOINT [ "/rpi/entrypoint.sh" ]
+
+COPY entrypoint.sh /rpi/

@@ -4,7 +4,7 @@ USER=stephenthirlwall
 NAME=rpicc
 
 IMAGE=$USER/$NAME
-PREFIX=/rpi/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf-
+BUILD_PREFIX=/rpi/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian/bin/arm-linux-gnueabihf
 
 CMD=$1 ; shift
 
@@ -16,7 +16,9 @@ case $CMD in
 
     run)
         docker run --rm -v $PWD:/build \
-            -e CC=${PREFIX}gcc \
+            -e BUILDER_UID=$( id -u ) \
+            -e BUILDER_GID=$( id -g ) \
+            -e BUILD_PREFIX=$BUILD_PREFIX \
             $IMAGE "$@"
         ;;
 
