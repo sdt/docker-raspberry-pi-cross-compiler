@@ -32,9 +32,11 @@ case $CMD in
         ;;
 
     run)
-        docker run --rm -v $PWD:/build \
-            -e BUILDER_UID=$( id -u ) \
-            -e BUILDER_GID=$( id -g ) \
+        if [ -z $DOCKER_HOST ]; then
+            SU_ARGS="-e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g )"
+            echo SU_ARGS=$SU_ARGS
+        fi
+        docker run --rm -v $PWD:/build $SU_ARGS \
             -e BUILD_PREFIX=$BUILD_PREFIX \
             $IMAGE "$@"
         ;;
