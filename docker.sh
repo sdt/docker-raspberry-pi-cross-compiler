@@ -21,7 +21,7 @@ BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian
 #BIN_PREFIX=arm-bcm2708hardfp-linux-gnueabi
 #BIN_DIR=$BIN_PREFIX
 
-BUILD_PREFIX=/rpi/arm-bcm2708/$BIN_DIR/bin/$BIN_PREFIX
+CCPREFIX=/rpi/arm-bcm2708/$BIN_DIR/bin/$BIN_PREFIX-
 
 CMD=$1 ; shift
 
@@ -35,8 +35,10 @@ case $CMD in
         if [ -z $DOCKER_HOST ]; then
             SU_ARGS="-e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g )"
         fi
-        docker run --rm -v $PWD:/build $SU_ARGS \
-            -e BUILD_PREFIX=$BUILD_PREFIX \
+        docker run --rm \
+            -v $PWD:/build \
+            $SU_ARGS \
+            -e CCPREFIX=$CCPREFIX \
             $IMAGE "$@"
         ;;
 

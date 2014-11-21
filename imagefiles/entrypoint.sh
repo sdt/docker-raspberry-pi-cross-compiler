@@ -4,16 +4,16 @@
 # container at runtime.
 
 # This needs to get passed in by the caller.
-: ${BUILD_PREFIX?}
-
+: ${CCPREFIX?}
+export CCPREFIX
 
 # Set up some of the usual makefile variables
-export AS=$BUILD_PREFIX-as
-export AR=$BUILD_PREFIX-ar
-export CC=$BUILD_PREFIX-gcc
-export CPP=$BUILD_PREFIX-cpp
-export CXX=$BUILD_PREFIX-g++
-export LD=$BUILD_PREFIX-ld
+export AS=${CCPREFIX}as
+export AR=${CCPREFIX}ar
+export CC=${CCPREFIX}gcc
+export CPP=${CCPREFIX}cpp
+export CXX=${CCPREFIX}g++
+export LD=${CCPREFIX}ld
 
 # If we are running docker locally, we want to create a user in the container
 # with the same UID and GID as the user on the host machine, so that any files
