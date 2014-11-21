@@ -34,8 +34,11 @@ if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
 
     # Create a user with the given UID (TODO: what if uid exists?)
     useradd -g $BUILDER_GID -u $BUILDER_UID $BUILDER_USER
+
+else
+    BUILDER_USER=root
 fi
 
 # And finally ... run the command we were asked to run!
 # Note that $BUILDER_USER might not be set
-su -c "$*" $BUILDER_USER
+sudo -u $BUILDER_USER "$@"
