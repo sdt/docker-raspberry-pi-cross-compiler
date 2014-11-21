@@ -1,7 +1,7 @@
 #!/bin/bash
 
 USER=stephenthirlwall
-NAME=rpicc
+NAME=rpi-xc
 
 IMAGE=$USER/$NAME
 
