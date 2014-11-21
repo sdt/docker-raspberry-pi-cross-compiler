@@ -3,7 +3,11 @@ MAINTAINER Stephen Thirlwall <sdt@dr.com>
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        bc cmake curl lib32stdc++6 lib32z1
+        bc \
+        cmake \
+        curl \
+        lib32stdc++6 \
+        lib32z1
 
 WORKDIR /rpi
 RUN curl -s -L https://github.com/raspberrypi/tools/tarball/master | \
