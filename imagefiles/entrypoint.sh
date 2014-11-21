@@ -4,20 +4,20 @@
 # container at runtime.
 
 # This needs to get passed in by the caller.
-: ${CCPREFIX?}
-export CCPREFIX
+: ${CROSS_COMPILE?}
+export CROSS_COMPILE
 
 # Set up some of the usual makefile variables
-export AS=${CCPREFIX}as
-export AR=${CCPREFIX}ar
-export CC=${CCPREFIX}gcc
-export CPP=${CCPREFIX}cpp
-export CXX=${CCPREFIX}g++
-export LD=${CCPREFIX}ld
+export AS=${CROSS_COMPILE}as
+export AR=${CROSS_COMPILE}ar
+export CC=${CROSS_COMPILE}gcc
+export CPP=${CROSS_COMPILE}cpp
+export CXX=${CROSS_COMPILE}g++
+export LD=${CROSS_COMPILE}ld
 
 # Create rpi- prefixed symlinks in /usr/local/bin (eg. rpi-gcc, rpi-ld)
-for i in ${CCPREFIX}*; do
-    ln -s $i /usr/local/bin/rpi-${i#$CCPREFIX}
+for i in ${CROSS_COMPILE}*; do
+    ln -s $i /usr/local/bin/rpi-${i#$CROSS_COMPILE}
 done
 
 # If we are running docker locally, we want to create a user in the container

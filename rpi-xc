@@ -18,7 +18,7 @@ BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian
 #BIN_PREFIX=arm-bcm2708hardfp-linux-gnueabi
 #BIN_DIR=$BIN_PREFIX
 
-CCPREFIX=/rpi/arm-bcm2708/$BIN_DIR/bin/$BIN_PREFIX-
+CROSS_COMPILE=/rpi/arm-bcm2708/$BIN_DIR/bin/$BIN_PREFIX-
 
 # If we are not running via boot2docker
 if [ -z $DOCKER_HOST ]; then
@@ -27,6 +27,6 @@ fi
 
 docker run -i --rm \
     -v $PWD:/build \
-    -e CCPREFIX=$CCPREFIX \
+    -e CROSS_COMPILE=$CROSS_COMPILE \
     $USER_IDS \
     $RPI_XC_IMAGE "$@"
