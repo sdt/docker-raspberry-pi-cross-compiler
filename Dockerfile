@@ -6,7 +6,7 @@ RUN apt-get update && \
         bc cmake curl lib32stdc++6 lib32z1
 
 WORKDIR /rpi
-RUN curl -L https://github.com/raspberrypi/tools/tarball/master | \
+RUN curl -s -L https://github.com/raspberrypi/tools/tarball/master | \
         tar --strip-components 1 -xzf -
 
 WORKDIR /build
