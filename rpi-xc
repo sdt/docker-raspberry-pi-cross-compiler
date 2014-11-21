@@ -27,6 +27,7 @@ fi
 
 docker run -i --rm \
     -v $PWD:/build \
+    -e ARCH=arm \
     -e CROSS_COMPILE=$CROSS_COMPILE \
     $USER_IDS \
     $RPI_XC_IMAGE "$@"

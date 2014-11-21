@@ -8,7 +8,7 @@ This project is available as [stephenthirlwall/rpi-xc](https://registry.hub.dock
 ## Features
 
 * make variables (CC, LD etc) are set to point to the appropriate tools in the container
-* CROSS_COMPILE is set in the container
+* ARCH=arm and CROSS_COMPILE environment variables are set in the container
 * commands in the container are run as the calling user, so that any created files have the expected ownership (ie. not root)
 * symlinks such as rpi-gcc and rpi-objdump are created in /usr/local/bin
 * current directory is mounted as the container's workdir, /build
@@ -31,8 +31,12 @@ Build the Makefile in the current directory.
 Standard bintools are available by adding an `rpi-` prefix.
 
 
-`rpi-xc bash -c 'make ARCH=arm'
+`rpi-xc make`
 
 Build the kernel from [raspberrypi/linux](https://github.com/raspberrypi/linux).
+The CROSS_COMPILE and ARCH flags are automatically set.
+
+
+`rpi-xc bash -c 'find . -name \*.o | sort > objects.txt'
 
 Note that commands are executed verbatim. If you require any shell processing for environment variable expansion or redirection, please use bash -c `'command args...'`.
