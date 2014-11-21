@@ -41,4 +41,4 @@ fi
 
 # And finally ... run the command we were asked to run!
 # Note that $BUILDER_USER might not be set
-sudo -u $BUILDER_USER "$@"
+sudo -E -u $BUILDER_USER "$@"
