@@ -42,4 +42,4 @@ The CROSS_COMPILE and ARCH flags are automatically set.
 
 `rpi-xc bash -c 'find . -name \*.o | sort > objects.txt'`
 
-Note that commands are executed verbatim. If you require any shell processing for environment variable expansion or redirection, please use bash -c `'command args...'`.
+Note that commands are executed verbatim. If you require any shell processing for environment variable expansion or redirection, please use `bash -c 'command args...'`.
