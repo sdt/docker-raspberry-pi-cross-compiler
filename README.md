@@ -25,20 +25,20 @@ Runs the given command in a fresh container.
 
 Build the Makefile in the current directory.
 
---
+---
 
 `rpi-xc rpi-gcc -o hello-world hello-world.c`
 
 Standard bintools are available by adding an `rpi-` prefix.
 
---
+---
 
 `rpi-xc make`
 
 Build the kernel from [raspberrypi/linux](https://github.com/raspberrypi/linux).
 The CROSS_COMPILE and ARCH flags are automatically set.
 
---
+---
 
 `rpi-xc bash -c 'find . -name \*.o | sort > objects.txt'`
 
