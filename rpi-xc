@@ -25,7 +25,7 @@ if [ -z $DOCKER_HOST ]; then
     USER_IDS="-e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g )"
 fi
 
-docker run -i --rm \
+docker run -i -t --rm \
     -v $PWD:/build \
     -e ARCH=arm \
     -e CROSS_COMPILE=$CROSS_COMPILE \
