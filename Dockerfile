@@ -18,4 +18,4 @@ RUN curl -s -L https://github.com/raspberrypi/tools/tarball/master | \
 WORKDIR /build
 ENTRYPOINT [ "/rpi/entrypoint.sh" ]
 
-COPY imagefiles/entrypoint.sh /rpi/
+COPY imagefiles/entrypoint.sh imagefiles/rpi-xc /rpi/
