@@ -12,6 +12,20 @@ This project is available as [stephenthirlwall/rpi-xc](https://registry.hub.dock
 * commands in the container are run as the calling user, so that any created files have the expected ownership (ie. not root)
 * symlinks such as rpi-gcc and rpi-objdump are created in /usr/local/bin
 * current directory is mounted as the container's workdir, /build
+* works with boot2docker on OSX
+
+## Installation
+
+This image is not intended to be run manually. Instead, there is a helper script which comes bundled with the image.
+
+To install the helper script, run the image with no arguments, and redirect the output to a file.
+
+eg.
+```
+docker run stephenthirlwall/rpi-xc > rpi-xc
+chmod +x rpi-xc
+mv rpi-xc ~/bin/
+```
 
 ## Usage
 
