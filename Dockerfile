@@ -7,7 +7,9 @@ RUN apt-get update && \
         cmake \
         curl \
         lib32stdc++6 \
-        lib32z1
+        lib32z1 \
+        ncurses-dev \
+        ;
 
 WORKDIR /rpi
 RUN curl -s -L https://github.com/raspberrypi/tools/tarball/master | \
