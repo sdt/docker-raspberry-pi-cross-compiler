@@ -31,3 +31,16 @@ docker run -i -t --rm \
     -e CROSS_COMPILE=$CROSS_COMPILE \
     $USER_IDS \
     $RPI_XC_IMAGE "$@"
+
+################################################################################
+#
+#   This image is not intended to be run manually.
+#
+#   To install the rpi-xc helper, run the following commands:
+#
+#       docker run stephenthirlwall/rpi-xc > rpi-xc
+#       chmod +x rpi-xc
+#
+#   You may then wish to move rpi-xc to somewhere in your path.
+#
+################################################################################
