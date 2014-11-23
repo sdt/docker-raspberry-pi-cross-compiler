@@ -3,24 +3,7 @@
 # This is the entrypoint script for the dockerfile. Executed in the
 # container at runtime.
 
-# This needs to get passed in by the caller.
-: ${CROSS_COMPILE?}
-export CROSS_COMPILE
-
-# Set up some of the usual makefile variables
-export AS=${CROSS_COMPILE}as
-export AR=${CROSS_COMPILE}ar
-export CC=${CROSS_COMPILE}gcc
-export CPP=${CROSS_COMPILE}cpp
-export CXX=${CROSS_COMPILE}g++
-export LD=${CROSS_COMPILE}ld
-
-# Create rpi- prefixed symlinks in /usr/local/bin (eg. rpi-gcc, rpi-ld)
-for i in ${CROSS_COMPILE}*; do
-    ln -s $i /usr/local/bin/rpi-${i#$CROSS_COMPILE}
-done
-
-# If we are running docker locally, we want to create a user in the container
+# If we are running docker natively, we want to create a user in the container
 # with the same UID and GID as the user on the host machine, so that any files
 # created are owned by that user. Without this they are all owned by root.
 # If we are running from boot2docker, this is not necessary.
@@ -39,6 +22,28 @@ else
     BUILDER_USER=root
 fi
 
-# And finally ... run the command we were asked to run!
-# Note that $BUILDER_USER might not be set
-sudo -E -u $BUILDER_USER "$@"
+if [[ -n $CROSS_COMPILE ]]; then
+
+    # CROSS_COMPILE got passed in by the user, so assume we got called by rpi-xc
+    export CROSS_COMPILE
+
+    # Set up some of the usual makefile variables
+    export AS=${CROSS_COMPILE}as
+    export AR=${CROSS_COMPILE}ar
+    export CC=${CROSS_COMPILE}gcc
+    export CPP=${CROSS_COMPILE}cpp
+    export CXX=${CROSS_COMPILE}g++
+    export LD=${CROSS_COMPILE}ld
+
+    # Create rpi- prefixed symlinks in /usr/local/bin (eg. rpi-gcc, rpi-ld)
+    for i in ${CROSS_COMPILE}*; do
+        ln -s $i /usr/local/bin/rpi-${i#$CROSS_COMPILE}
+    done
+
+    # And finally ... run the command we were asked to run!
+    # Note that $BUILDER_USER might not be set
+    exec sudo -E -u $BUILDER_USER "$@"
+else
+    # Presumably the image has been run directly, so help the user # get going.
+    cat /rpi/rpi-xc
+fi
