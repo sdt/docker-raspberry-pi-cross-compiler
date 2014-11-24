@@ -31,6 +31,12 @@ case $1 in
         exit
         ;;
 
+    update)
+        $0 update-image
+        $0 update-script
+        exit
+        ;;
+
     --)
         # Everything after this is the command-line to be executed
         shift
