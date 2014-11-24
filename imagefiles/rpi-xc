@@ -10,7 +10,33 @@ usage() {
 }
 [[ $# -gt 0 ]] || usage
 
+
+# Set the docker image
 : ${RPI_XC_IMAGE:=stephenthirlwall/rpi-xc}
+
+case $1 in
+
+    update-image)
+        docker pull $RPI_XC_IMAGE
+        exit
+        ;;
+
+    update-script)
+        if cmp -s <( docker run $RPI_XC_IMAGE ) $0; then
+            echo $0 is up to date
+        else
+            echo -n Updating $0 '... '
+            docker run $RPI_XC_IMAGE > $0 && echo ok
+        fi
+        exit
+        ;;
+
+    --)
+        # Everything after this is the command-line to be executed
+        shift
+        ;;
+
+esac
 
 # Choose one of raspbian32, raspbian64, gnusw, gnuhw
 : ${TARGET:=raspbian32}
