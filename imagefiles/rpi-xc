@@ -5,6 +5,11 @@ err() {
     exit 1
 }
 
+usage() {
+    err usage: $0 [command [args...]]
+}
+[[ $# -gt 0 ]] || usage
+
 : ${RPI_XC_IMAGE:=stephenthirlwall/rpi-xc}
 
 # Choose one of raspbian32, raspbian64, gnusw, gnuhw
