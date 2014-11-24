@@ -1,22 +1,47 @@
 #!/bin/bash
 
+err() {
+    echo -e >&2 "$*"
+    exit 1
+}
+
 : ${RPI_XC_IMAGE:=stephenthirlwall/rpi-xc}
 
-# Raspbian 32-bit
-BIN_PREFIX=arm-linux-gnueabihf
-BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian
+# Choose one of raspbian32, raspbian64, gnusw, gnuhw
+: ${TARGET:=raspbian32}
 
-## Raspbian 64-bit
-#BIN_PREFIX=arm-linux-gnueabihf
-#BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian-x64
-#
-## Software-float GNU (not sure what this is really)
-#BIN_PREFIX=arm-bcm2708-linux-gnueabi
-#BIN_DIR=$BIN_PREFIX
-#
-## Hardware-float GNU (not sure what this is really)
-#BIN_PREFIX=arm-bcm2708hardfp-linux-gnueabi
-#BIN_DIR=$BIN_PREFIX
+case $TARGET in
+
+    raspbian32)
+        # Raspbian 32-bit
+        BIN_PREFIX=arm-linux-gnueabihf
+        BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian
+        ;;
+
+    raspbian64)
+        # Raspbian 64-bit
+        BIN_PREFIX=arm-linux-gnueabihf
+        BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian-x64
+        ;;
+
+    gnusw)
+        # Software-float GNU (not sure what this is really)
+        BIN_PREFIX=arm-bcm2708-linux-gnueabi
+        BIN_DIR=$BIN_PREFIX
+        ;;
+
+    gnuhw)
+        # Hardware-float GNU (not sure what this is really)
+        BIN_PREFIX=arm-bcm2708hardfp-linux-gnueabi
+        BIN_DIR=$BIN_PREFIX
+        ;;
+
+    *)
+        err Unknown TARGET=$TARGET \
+            "\n"Possible values: raspbian32, raspbian64, gnusw, gnuhw
+        ;;
+
+esac
 
 CROSS_COMPILE=/rpi/arm-bcm2708/$BIN_DIR/bin/$BIN_PREFIX-
 
