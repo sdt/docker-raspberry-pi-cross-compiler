@@ -10,6 +10,10 @@ usage() {
 }
 [[ $# -gt 0 ]] || usage
 
+# Load up the config file if it exists
+: ${RPI_XC_CONFIG:=~/.rpi-xc}
+
+[[ -f "$RPI_XC_CONFIG" ]] && source "$RPI_XC_CONFIG"
 
 # Set the docker image
 : ${RPI_XC_IMAGE:=stephenthirlwall/rpi-xc}
