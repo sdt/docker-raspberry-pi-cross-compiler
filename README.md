@@ -7,11 +7,12 @@ This project is available as [stephenthirlwall/rpi-xc](https://registry.hub.dock
 
 ## Features
 
-* make variables (CC, LD etc) are set to point to the appropriate tools in the container
-* ARCH=arm and CROSS_COMPILE environment variables are set in the container
+* all four builds from [raspberrypi/tools](https://github.com/raspberrypi/tools) are available
 * commands in the container are run as the calling user, so that any created files have the expected ownership (ie. not root)
-* symlinks such as rpi-gcc and rpi-objdump are created in /usr/local/bin
-* current directory is mounted as the container's workdir, /build
+* make variables (`CC`, `LD` etc) are set to point to the appropriate tools in the container
+* `ARCH=arm` and `CROSS_COMPILE` environment variables are set in the container
+* symlinks such as `rpi-gcc` and `rpi-objdump` are created in `/usr/local/bin`
+* current directory is mounted as the container's workdir, `/build`
 * works with boot2docker on OSX
 
 ## Installation
@@ -48,6 +49,19 @@ Default: `~/.rpi-xc`
 The docker image to run.
 
 Default: stephenthirlwall/rpi-xc
+
+### RPI_XC_TARGET
+
+Which cross-compiler toolchain to use.
+
+Available toolchains:
+
+* gnusw [arm-bcm2708-linux-gnueabi](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/arm-bcm2708-linux-gnueabi)
+* gnuhw [arm-bcm2708-linuxhardfp-gnueabi](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi)
+* raspbian32 [gcc-linaro-arm-linux-gnueabihf-raspbian](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian)
+* raspbian64 [gcc-linaro-arm-linux-gnueabihf-raspbian-x64](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64)
+
+Default: raspbian32
 
 ### RPI_XC_ARGS
 
