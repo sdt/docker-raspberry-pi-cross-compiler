@@ -45,9 +45,9 @@ case $1 in
 esac
 
 # Choose one of raspbian32, raspbian64, gnusw, gnuhw
-: ${TARGET:=raspbian32}
+: ${RPI_XC_TARGET:=raspbian32}
 
-case $TARGET in
+case $RPI_XC_TARGET in
 
     raspbian32)
         # Raspbian 32-bit
@@ -74,7 +74,7 @@ case $TARGET in
         ;;
 
     *)
-        err Unknown TARGET=$TARGET \
+        err Unknown RPI_XC_TARGET=$RPI_XC_TARGET \
             "\n"Possible values: raspbian32, raspbian64, gnusw, gnuhw
         ;;
 
