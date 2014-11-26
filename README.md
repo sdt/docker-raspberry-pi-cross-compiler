@@ -30,9 +30,35 @@ mv rpi-xc ~/bin/
 
 ## Usage
 
-`rpi-xc <command> [args...]`
+`rpi-xc [command] [args...]`
 
-Runs the given command in a fresh container.
+Execute the given command-line inside the container.
+
+If the command matches one of the rpi-xc built-in commands (see below), that will be executed locally, otherwise the command is executed inside the container.
+
+---
+
+`rpi-xc -- [command] [args...]`
+
+To force a command to run inside the container (in case of a name clash with a built-in command), use `--` before the command.
+
+### Built-in commands
+
+`rpi-xc update-image`
+
+Fetch the latest version of the docker image.
+
+---
+
+`rpi-xc update-script`
+
+Update the installed rpi-xc script with the one bundled in the image.
+
+----
+
+`rpi-xc update`
+
+Update both the docker image, and the rpi-xc script.
 
 ## Configuration
 
