@@ -33,6 +33,26 @@ mv rpi-xc ~/bin/
 
 Runs the given command in a fresh container.
 
+## Configuration
+
+The following environment variables are used:
+
+### RPI_XC_CONFIG
+
+This file is sourced if it exists.
+
+Default: `~/.rpi-xc`
+
+### RPI_XC_IMAGE
+
+The docker image to run.
+
+Default: stephenthirlwall/rpi-xc
+
+### RPI_XC_ARGS
+
+Extra arguments to pass to the `docker run` command.
+
 ## Examples
 
 `rpi-xc make`
