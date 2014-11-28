@@ -24,7 +24,7 @@ fi
 
 if [[ -n $CROSS_COMPILE ]]; then
 
-    # CROSS_COMPILE got passed in by the user, so assume we got called by rpi-xc
+    # CROSS_COMPILE got passed in by the user, so assume we got called by rpxc
     export CROSS_COMPILE
 
     # Set up some of the usual makefile variables
@@ -35,9 +35,9 @@ if [[ -n $CROSS_COMPILE ]]; then
     export CXX=${CROSS_COMPILE}g++
     export LD=${CROSS_COMPILE}ld
 
-    # Create rpi- prefixed symlinks in /usr/local/bin (eg. rpi-gcc, rpi-ld)
+    # Create rpxc- prefixed symlinks in /usr/local/bin (eg. rpxc-gcc, rpxc-ld)
     for i in ${CROSS_COMPILE}*; do
-        ln -s $i /usr/local/bin/rpi-${i#$CROSS_COMPILE}
+        ln -s $i /usr/local/bin/rpxc-${i#$CROSS_COMPILE}
     done
 
     # And finally ... run the command we were asked to run!
@@ -45,5 +45,5 @@ if [[ -n $CROSS_COMPILE ]]; then
     exec sudo -E -u $BUILDER_USER "$@"
 else
     # Presumably the image has been run directly, so help the user # get going.
-    cat /rpi/rpi-xc
+    cat /rpxc/rpxc
 fi

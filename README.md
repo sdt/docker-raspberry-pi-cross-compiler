@@ -2,7 +2,7 @@
 
 Installs [the Raspberry Pi cross-compilation toolchain](https://github.com/raspberrypi/tools) onto the [ubuntu:trusty Docker image](https://registry.hub.docker.com/_/ubuntu/).
 
-This project is available as [stephenthirlwall/rpi-xc](https://registry.hub.docker.com/u/stephenthirlwall/rpi-xc/) on [Docker Hub](https://hub.docker.com/), and as [sdt/docker-raspberrypi-cross-compiler](https://github.com/sdt/docker-raspberrypi-cross-compiler) on [GitHub](https://github.com).
+This project is available as [sdt4docker/raspberry-pi-cross-compiler](https://registry.hub.docker.com/u/sdt4docker/raspberry-pi-cross-compiler/) on [Docker Hub](https://hub.docker.com/), and as [sdt/docker-raspberry-pi-cross-compiler](https://github.com/sdt/docker-raspberry-pi-cross-compiler) on [GitHub](https://github.com).
 
 
 ## Features
@@ -11,7 +11,7 @@ This project is available as [stephenthirlwall/rpi-xc](https://registry.hub.dock
 * commands in the container are run as the calling user, so that any created files have the expected ownership (ie. not root)
 * make variables (`CC`, `LD` etc) are set to point to the appropriate tools in the container
 * `ARCH=arm` and `CROSS_COMPILE` environment variables are set in the container
-* symlinks such as `rpi-gcc` and `rpi-objdump` are created in `/usr/local/bin`
+* symlinks such as `rpxc-gcc` and `rpxc-objdump` are created in `/usr/local/bin`
 * current directory is mounted as the container's workdir, `/build`
 * works with boot2docker on OSX
 
@@ -23,60 +23,60 @@ To install the helper script, run the image with no arguments, and redirect the 
 
 eg.
 ```
-docker run stephenthirlwall/rpi-xc > rpi-xc
-chmod +x rpi-xc
-mv rpi-xc ~/bin/
+docker run sdt4docker/raspberry-pi-cross-compiler > rpxc
+chmod +x rpxc
+mv rpxc ~/bin/
 ```
 
 ## Usage
 
-`rpi-xc [command] [args...]`
+`rpxc [command] [args...]`
 
 Execute the given command-line inside the container.
 
-If the command matches one of the rpi-xc built-in commands (see below), that will be executed locally, otherwise the command is executed inside the container.
+If the command matches one of the rpxc built-in commands (see below), that will be executed locally, otherwise the command is executed inside the container.
 
 ---
 
-`rpi-xc -- [command] [args...]`
+`rpxc -- [command] [args...]`
 
 To force a command to run inside the container (in case of a name clash with a built-in command), use `--` before the command.
 
 ### Built-in commands
 
-`rpi-xc update-image`
+`rpxc update-image`
 
 Fetch the latest version of the docker image.
 
 ---
 
-`rpi-xc update-script`
+`rpxc update-script`
 
-Update the installed rpi-xc script with the one bundled in the image.
+Update the installed rpxc script with the one bundled in the image.
 
 ----
 
-`rpi-xc update`
+`rpxc update`
 
-Update both the docker image, and the rpi-xc script.
+Update both the docker image, and the rpxc script.
 
 ## Configuration
 
 The following environment variables are used:
 
-### RPI_XC_CONFIG
+### RPXC_CONFIG
 
 This file is sourced if it exists.
 
-Default: `~/.rpi-xc`
+Default: `~/.rpxc`
 
-### RPI_XC_IMAGE
+### RPXC_IMAGE
 
 The docker image to run.
 
-Default: stephenthirlwall/rpi-xc
+Default: sdt4docker/raspberry-pi-cross-compiler
 
-### RPI_XC_TARGET
+### RPXC_TARGET
 
 Which cross-compiler toolchain to use.
 
@@ -89,31 +89,31 @@ Available toolchains:
 
 Default: raspbian32
 
-### RPI_XC_ARGS
+### RPXC_ARGS
 
 Extra arguments to pass to the `docker run` command.
 
 ## Examples
 
-`rpi-xc make`
+`rpxcc make`
 
 Build the Makefile in the current directory.
 
 ---
 
-`rpi-xc rpi-gcc -o hello-world hello-world.c`
+`rpxc rpxc-gcc -o hello-world hello-world.c`
 
-Standard bintools are available by adding an `rpi-` prefix.
+Standard bintools are available by adding an `rpxc-` prefix.
 
 ---
 
-`rpi-xc make`
+`rpxc make`
 
 Build the kernel from [raspberrypi/linux](https://github.com/raspberrypi/linux).
 The CROSS_COMPILE and ARCH flags are automatically set.
 
 ---
 
-`rpi-xc bash -c 'find . -name \*.o | sort > objects.txt'`
+`rpxc bash -c 'find . -name \*.o | sort > objects.txt'`
 
 Note that commands are executed verbatim. If you require any shell processing for environment variable expansion or redirection, please use `bash -c 'command args...'`.

@@ -11,11 +11,11 @@ RUN apt-get update && \
         ncurses-dev \
         ;
 
-WORKDIR /rpi
+WORKDIR /rpxc
 RUN curl -s -L https://github.com/raspberrypi/tools/tarball/master | \
         tar --strip-components 1 -xzf -
 
 WORKDIR /build
-ENTRYPOINT [ "/rpi/entrypoint.sh" ]
+ENTRYPOINT [ "/rpxc/entrypoint.sh" ]
 
-COPY imagefiles/entrypoint.sh imagefiles/rpi-xc /rpi/
+COPY imagefiles/entrypoint.sh imagefiles/rpxc /rpxc/

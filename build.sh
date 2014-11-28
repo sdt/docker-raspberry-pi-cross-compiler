@@ -1,5 +1,5 @@
 #!/bin/bash
 
-: ${RPI_XC_IMAGE:=stephenthirlwall/rpi-xc}
+: ${RPXC_IMAGE:=sdt4docker/raspberry-pi-cross-compiler}
 
-docker build -t $RPI_XC_IMAGE .
+docker build -t $RPXC_IMAGE .
