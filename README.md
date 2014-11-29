@@ -95,7 +95,7 @@ Extra arguments to pass to the `docker run` command.
 
 ## Examples
 
-`rpxcc make`
+`rpxc make`
 
 Build the Makefile in the current directory.
 
