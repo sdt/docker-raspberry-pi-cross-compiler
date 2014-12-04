@@ -24,7 +24,8 @@ fi
 
 if [[ -n $CROSS_COMPILE ]]; then
 
-    # CROSS_COMPILE got passed in by the user, so assume we got called by rpxc
+    # CROSS_COMPILE got passed in by the user, so set up the variables and
+    # the links.
     export CROSS_COMPILE
 
     # Set up some of the usual makefile variables
@@ -39,11 +40,12 @@ if [[ -n $CROSS_COMPILE ]]; then
     for i in ${CROSS_COMPILE}*; do
         ln -s $i /usr/local/bin/rpxc-${i#$CROSS_COMPILE}
     done
+fi
 
-    # And finally ... run the command we were asked to run!
-    # Note that $BUILDER_USER might not be set
-    exec sudo -E -u $BUILDER_USER "$@"
-else
-    # Presumably the image has been run directly, so help the user # get going.
+if [[ $# == 0 ]]; then
+    # Presumably the image has been run directly, so help the user get started.
     cat /rpxc/rpxc
+else
+    # Otherwise ... run the command we were asked to run!
+    exec sudo -E -u $BUILDER_USER "$@"
 fi
