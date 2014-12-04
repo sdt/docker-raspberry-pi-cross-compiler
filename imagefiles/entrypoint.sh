@@ -42,6 +42,10 @@ if [[ -n $CROSS_COMPILE ]]; then
     done
 fi
 
+# Export other variables that might have gotten passed in
+export ARCH
+export HOST
+
 if [[ $# == 0 ]]; then
     # Presumably the image has been run directly, so help the user get started.
     cat /rpxc/rpxc
