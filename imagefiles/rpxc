@@ -18,26 +18,41 @@ usage() {
 # Set the docker image
 : ${RPXC_IMAGE:=sdt4docker/raspberry-pi-cross-compiler}
 
+#------------------------------------------------------------------------------
+# Command handlers
+#
+command:update-image() {
+    docker pull $RPXC_IMAGE
+}
+
+command:update-script() {
+    if cmp -s <( docker run $RPXC_IMAGE ) $0; then
+        echo $0 is up to date
+    else
+        echo -n Updating $0 '... '
+        docker run $RPXC_IMAGE > $0 && echo ok
+    fi
+}
+
+command:update() {
+    command:update-image
+    command:update-script
+}
+
 case $1 in
 
     update-image)
-        docker pull $RPXC_IMAGE
+        command:update-image
         exit
         ;;
 
     update-script)
-        if cmp -s <( docker run $RPXC_IMAGE ) $0; then
-            echo $0 is up to date
-        else
-            echo -n Updating $0 '... '
-            docker run $RPXC_IMAGE > $0 && echo ok
-        fi
+        command:update-script
         exit
         ;;
 
     update)
-        $0 update-image
-        $0 update-script
+        command:update
         exit
         ;;
 
