@@ -39,26 +39,22 @@ command:update() {
     command:update-script
 }
 
+#------------------------------------------------------------------------------
+# Command-line processing
+#
 case $1 in
-
-    update-image)
-        command:update-image
-        exit
-        ;;
-
-    update-script)
-        command:update-script
-        exit
-        ;;
-
-    update)
-        command:update
-        exit
-        ;;
 
     --)
         # Everything after this is the command-line to be executed
         shift
+        ;;
+
+    *)
+        # If this is a builtin command, execute it, otherwise fall through
+        if type -t command:$1 | grep -q function; then
+            command:$1 "${@:2}" # array slice skipping first element
+            exit $?
+        fi
         ;;
 
 esac
