@@ -120,26 +120,26 @@ case $RPXC_TARGET in
 
     raspbian32)
         # Raspbian 32-bit
-        BIN_PREFIX=arm-linux-gnueabihf
-        BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian
+        HOST=arm-linux-gnueabihf
+        BIN_DIR=gcc-linaro-$HOST-raspbian
         ;;
 
     raspbian64)
         # Raspbian 64-bit
-        BIN_PREFIX=arm-linux-gnueabihf
-        BIN_DIR=gcc-linaro-$BIN_PREFIX-raspbian-x64
+        HOST=arm-linux-gnueabihf
+        BIN_DIR=gcc-linaro-$HOST-raspbian-x64
         ;;
 
     gnusw)
         # Software-float GNU (not sure what this is really)
-        BIN_PREFIX=arm-bcm2708-linux-gnueabi
-        BIN_DIR=$BIN_PREFIX
+        HOST=arm-bcm2708-linux-gnueabi
+        BIN_DIR=$HOST
         ;;
 
     gnuhw)
         # Hardware-float GNU (not sure what this is really)
-        BIN_PREFIX=arm-bcm2708hardfp-linux-gnueabi
-        BIN_DIR=$BIN_PREFIX
+        HOST=arm-bcm2708hardfp-linux-gnueabi
+        BIN_DIR=$HOST
         ;;
 
     *)
@@ -149,7 +149,7 @@ case $RPXC_TARGET in
 
 esac
 
-CROSS_COMPILE=/rpxc/arm-bcm2708/$BIN_DIR/bin/$BIN_PREFIX-
+CROSS_COMPILE=/rpxc/arm-bcm2708/$BIN_DIR/bin/$HOST-
 
 # If we are not running via boot2docker
 if [ -z $DOCKER_HOST ]; then
@@ -160,6 +160,7 @@ docker run -i -t --rm \
     -v $PWD:/build \
     -e ARCH=arm \
     -e CROSS_COMPILE=$CROSS_COMPILE \
+    -e HOST=$HOST \
     $USER_IDS \
     $RPXC_ARGS \
     $RPXC_IMAGE "$@"

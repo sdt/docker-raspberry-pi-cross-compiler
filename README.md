@@ -10,7 +10,7 @@ This project is available as [sdt4docker/raspberry-pi-cross-compiler](https://re
 * all four builds from [raspberrypi/tools](https://github.com/raspberrypi/tools) are available
 * commands in the container are run as the calling user, so that any created files have the expected ownership (ie. not root)
 * make variables (`CC`, `LD` etc) are set to point to the appropriate tools in the container
-* `ARCH=arm` and `CROSS_COMPILE` environment variables are set in the container
+* `ARCH`, `CROSS_COMPILE` and `HOST` environment variables are set in the container
 * symlinks such as `rpxc-gcc` and `rpxc-objdump` are created in `/usr/local/bin`
 * current directory is mounted as the container's workdir, `/build`
 * works with boot2docker on OSX
