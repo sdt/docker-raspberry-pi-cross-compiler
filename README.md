@@ -62,21 +62,21 @@ Update both the docker image, and the rpxc script.
 
 ## Configuration
 
-The following environment variables are used:
+The following command-line options and environment variables are used. In all cases, the command-line option overrides the environment variable.
 
-### RPXC_CONFIG
+### RPXC_CONFIG / --config <path-to-config-file>
 
 This file is sourced if it exists.
 
 Default: `~/.rpxc`
 
-### RPXC_IMAGE
+### RPXC_IMAGE / --image <docker-image-name>
 
 The docker image to run.
 
 Default: sdt4docker/raspberry-pi-cross-compiler
 
-### RPXC_TARGET
+### RPXC_TARGET / --target <target-name>
 
 Which cross-compiler toolchain to use.
 
@@ -89,7 +89,7 @@ Available toolchains:
 
 Default: raspbian32
 
-### RPXC_ARGS
+### RPXC_ARGS / --args <docker-run-args>
 
 Extra arguments to pass to the `docker run` command.
 
