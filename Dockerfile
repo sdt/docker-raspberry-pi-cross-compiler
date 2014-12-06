@@ -5,8 +5,10 @@ RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
         automake \
         bc \
+        bison \
         cmake \
         curl \
+        flex \
         lib32stdc++6 \
         lib32z1 \
         ncurses-dev \
