@@ -37,8 +37,9 @@ if [[ -n $CROSS_COMPILE ]]; then
     export LD=${CROSS_COMPILE}ld
 
     # Create rpxc- prefixed symlinks in /usr/local/bin (eg. rpxc-gcc, rpxc-ld)
+    mkdir -p /usr/local/bin
     for i in ${CROSS_COMPILE}*; do
-        ln -s $i /usr/local/bin/rpxc-${i#$CROSS_COMPILE}
+        ln -sf $i /usr/local/bin/rpxc-${i#$CROSS_COMPILE}
     done
 fi
 
