@@ -117,3 +117,7 @@ The CROSS_COMPILE and ARCH flags are automatically set.
 `rpxc bash -c 'find . -name \*.o | sort > objects.txt'`
 
 Note that commands are executed verbatim. If you require any shell processing for environment variable expansion or redirection, please use `bash -c 'command args...'`.
+
+---
+
+More examples can be found in the [examples directory](examples).
