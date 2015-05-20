@@ -33,6 +33,7 @@ RUN apt-get update \
         lib32stdc++6 \
         lib32z1 \
         ncurses-dev \
+        runit \
  &&  curl -s -L https://github.com/raspberrypi/tools/tarball/master \
      | tar --wildcards --strip-components 2 -xzf - "*/arm-bcm2708/$TOOLCHAIN/" \
  && mkdir -p /usr/local/bin \
