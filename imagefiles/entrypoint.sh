@@ -22,31 +22,6 @@ else
     BUILDER_USER=root
 fi
 
-if [[ -n $CROSS_COMPILE ]]; then
-
-    # CROSS_COMPILE got passed in by the user, so set up the variables and
-    # the links.
-    export CROSS_COMPILE
-
-    # Set up some of the usual makefile variables
-    export AS=${CROSS_COMPILE}as
-    export AR=${CROSS_COMPILE}ar
-    export CC=${CROSS_COMPILE}gcc
-    export CPP=${CROSS_COMPILE}cpp
-    export CXX=${CROSS_COMPILE}g++
-    export LD=${CROSS_COMPILE}ld
-
-    # Create rpxc- prefixed symlinks in /usr/local/bin (eg. rpxc-gcc, rpxc-ld)
-    mkdir -p /usr/local/bin
-    for i in ${CROSS_COMPILE}*; do
-        ln -sf $i /usr/local/bin/rpxc-${i#$CROSS_COMPILE}
-    done
-fi
-
-# Export other variables that might have gotten passed in
-export ARCH
-export HOST
-
 if [[ $# == 0 ]]; then
     # Presumably the image has been run directly, so help the user get started.
     cat /rpxc/rpxc

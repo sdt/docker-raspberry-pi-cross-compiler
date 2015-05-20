@@ -8,7 +8,7 @@ Please raise any issues on the [GitHub issue tracker](https://github.com/sdt/doc
 
 ## Features
 
-* all four builds from [raspberrypi/tools](https://github.com/raspberrypi/tools) are available
+* the gcc-linaro-arm-linux-gnueabihf-raspbian toolchain from [raspberrypi/tools](https://github.com/raspberrypi/tools)
 * commands in the container are run as the calling user, so that any created files have the expected ownership (ie. not root)
 * make variables (`CC`, `LD` etc) are set to point to the appropriate tools in the container
 * `ARCH`, `CROSS_COMPILE` and `HOST` environment variables are set in the container
@@ -76,19 +76,6 @@ Default: `~/.rpxc`
 The docker image to run.
 
 Default: sdt4docker/raspberry-pi-cross-compiler
-
-### RPXC_TARGET / --target &lt;target-name&gt;
-
-Which cross-compiler toolchain to use.
-
-Available toolchains:
-
-* gnusw [arm-bcm2708-linux-gnueabi](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/arm-bcm2708-linux-gnueabi)
-* gnuhw [arm-bcm2708-linuxhardfp-gnueabi](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/arm-bcm2708hardfp-linux-gnueabi)
-* raspbian32 [gcc-linaro-arm-linux-gnueabihf-raspbian](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian)
-* raspbian64 [gcc-linaro-arm-linux-gnueabihf-raspbian-x64](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64)
-
-Default: raspbian32
 
 ### RPXC_ARGS / --args &lt;docker-run-args&gt;
 

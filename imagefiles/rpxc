@@ -104,11 +104,6 @@ while [[ $# != 0 ]]; do
             shift 2
             ;;
 
-        --target)
-            ARG_TARGET="$2"
-            shift 2
-            ;;
-
         -*)
             err Unknown option \"$1\"
             command:help
@@ -137,47 +132,8 @@ FINAL_CONFIG=${ARG_CONFIG-${RPXC_CONFIG-$DEFAULT_CONFIG}}
 DEFAULT_IMAGE=sdt4docker/raspberry-pi-cross-compiler
 FINAL_IMAGE=${ARG_IMAGE-${RPXC_IMAGE-$DEFAULT_IMAGE}}
 
-# Set the target: one of raspbian32, raspbian64, gnusw, gnuhw
-DEFAULT_TARGET=raspbian32
-FINAL_TARGET=${ARG_TARGET-${RPXC_TARGET-$DEFAULT_TARGET}}
-
 # Set the docker run extra args (if any)
 FINAL_ARGS=${ARG_ARGS-${RPXC_ARGS}}
-
-case $FINAL_TARGET in
-
-    raspbian32)
-        # Raspbian 32-bit
-        HOST=arm-linux-gnueabihf
-        BIN_DIR=gcc-linaro-$HOST-raspbian
-        ;;
-
-    raspbian64)
-        # Raspbian 64-bit
-        HOST=arm-linux-gnueabihf
-        BIN_DIR=gcc-linaro-$HOST-raspbian-x64
-        ;;
-
-    gnusw)
-        # Software-float GNU (not sure what this is really)
-        HOST=arm-bcm2708-linux-gnueabi
-        BIN_DIR=$HOST
-        ;;
-
-    gnuhw)
-        # Hardware-float GNU (not sure what this is really)
-        HOST=arm-bcm2708hardfp-linux-gnueabi
-        BIN_DIR=$HOST
-        ;;
-
-    *)
-        die Unknown target \"$FINAL_TARGET\" \
-            "\n"Possible values: raspbian32, raspbian64, gnusw, gnuhw
-        ;;
-
-esac
-
-CROSS_COMPILE=/rpxc/arm-bcm2708/$BIN_DIR/bin/$HOST-
 
 # If we are not running via boot2docker
 if [ -z $DOCKER_HOST ]; then
@@ -214,9 +170,6 @@ esac
 #
 docker run -i -t --rm \
     -v $PWD:/build \
-    -e ARCH=arm \
-    -e CROSS_COMPILE=$CROSS_COMPILE \
-    -e HOST=$HOST \
     $USER_IDS \
     $FINAL_ARGS \
     $FINAL_IMAGE "$@"
