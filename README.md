@@ -1,20 +1,25 @@
-# Raspberry Pi cross-compilation in a Docker container.
+# Raspberry Pi Cross-Compiler in a Docker Container
 
-Installs [the Raspberry Pi cross-compilation toolchain](https://github.com/raspberrypi/tools) onto the [ubuntu:trusty Docker image](https://registry.hub.docker.com/_/ubuntu/).
+An easy-to-use  all-in-one cross compiler for the Raspberry Pi.
 
-This project is available as [sdt4docker/raspberry-pi-cross-compiler](https://registry.hub.docker.com/u/sdt4docker/raspberry-pi-cross-compiler/) on [Docker Hub](https://hub.docker.com/), and as [sdt/docker-raspberry-pi-cross-compiler](https://github.com/sdt/docker-raspberry-pi-cross-compiler) on [GitHub](https://github.com).
+This project is available as [sdthirlwall/raspberry-pi-cross-compiler](https://registry.hub.docker.com/u/sdthirlwall/raspberry-pi-cross-compiler/) on [Docker Hub](https://hub.docker.com/), and as [sdt/docker-raspberry-pi-cross-compiler](https://github.com/sdt/docker-raspberry-pi-cross-compiler) on [GitHub](https://github.com).
 
 Please raise any issues on the [GitHub issue tracker](https://github.com/sdt/docker-raspberry-pi-cross-compiler/issues) as I don't get notified about Docker Hub comments.
 
+## Contents
+
+* [Features](#features)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Configuration](#configuration)
+* [Custom Images](#custom-images)
+
 ## Features
 
-* the gcc-linaro-arm-linux-gnueabihf-raspbian toolchain from [raspberrypi/tools](https://github.com/raspberrypi/tools)
-* commands in the container are run as the calling user, so that any created files have the expected ownership (ie. not root)
-* make variables (`CC`, `LD` etc) are set to point to the appropriate tools in the container
-* `ARCH`, `CROSS_COMPILE` and `HOST` environment variables are set in the container
-* symlinks such as `rpxc-gcc` and `rpxc-objdump` are created in `/usr/local/bin`
-* current directory is mounted as the container's workdir, `/build`
-* works with boot2docker on OSX
+* The [gcc-linaro-arm-linux-gnueabihf-raspbian-x64 toolchain](https://github.com/raspberrypi/tools/tree/master/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64) from [raspberrypi/tools](https://github.com/raspberrypi/tools)
+* Raspbian sysroot from [sdhibit/docker-rpi-raspbian](https://github.com/sdhibit/docker-rpi-raspbian) :new:
+* Easy installation of raspbian packages into the sysroot using the [customised qemu arm emulator](https://resin.io/blog/building-arm-containers-on-any-x86-machine-even-dockerhub/) from [resin-io-projects/armv7hf-debian-qemu](https://github.com/resin-io-projects/armv7hf-debian-qemu) :new:
+* Easy-to-use front end wrapper program `rpxc`.
 
 ## Installation
 
@@ -24,9 +29,8 @@ To install the helper script, run the image with no arguments, and redirect the 
 
 eg.
 ```
-docker run sdt4docker/raspberry-pi-cross-compiler > rpxc
-chmod +x rpxc
-mv rpxc ~/bin/
+docker run sdthirlwall/raspberry-pi-cross-compiler > ~/bin/rpxc
+chmod +x ~/bin/rpxc
 ```
 
 ## Usage
@@ -37,29 +41,43 @@ Execute the given command-line inside the container.
 
 If the command matches one of the rpxc built-in commands (see below), that will be executed locally, otherwise the command is executed inside the container.
 
----
-
 `rpxc -- [command] [args...]`
 
 To force a command to run inside the container (in case of a name clash with a built-in command), use `--` before the command.
 
 ### Built-in commands
 
+#### install-debian
+
+`rpxc install-debian [--update] package packages...`
+
+Install native packages into the docker image. Changes are committed back to the sdthirlwall/raspberry-pi-cross-compiler image.
+
+#### install-raspbian
+
+`rpxc install-raspbian [--update] package packages...`
+
+Install raspbian packages from the raspbian repositories into the sysroot of thedocker image. Changes are committed back to the sdthirlwall/raspberry-pi-cross-compiler image.
+
+#### update-image
+
 `rpxc update-image`
 
-Fetch the latest version of the docker image.
+Pull the latest version of the docker image.
 
----
+If a new docker image is available, any extra packages installed with `install-debian` or `install-raspbian` _will be lost_.
+
+#### update-script
 
 `rpxc update-script`
 
 Update the installed rpxc script with the one bundled in the image.
 
-----
+#### update
 
 `rpxc update`
 
-Update both the docker image, and the rpxc script.
+Update both the docker image and the rpxc script.
 
 ## Configuration
 
@@ -75,37 +93,51 @@ Default: `~/.rpxc`
 
 The docker image to run.
 
-Default: sdt4docker/raspberry-pi-cross-compiler
+Default: sdthirlwall/raspberry-pi-cross-compiler
 
 ### RPXC_ARGS / --args &lt;docker-run-args&gt;
 
 Extra arguments to pass to the `docker run` command.
 
-## Examples
+## Custom Images
 
-`rpxc make`
+Using `rpxc install-debian` and `rpxc install-raspbian` are really only intended for getting a build environment together. Once you've figured out which debian and raspbian packages you need, it's better to create a custom downstream image that has all your tools and development packages built in.
 
-Build the Makefile in the current directory.
+### Create a Dockerfile
 
----
+```Dockerfile
+FROM sdthirlwall/raspberry-pi-cross-compiler
 
-`rpxc rpxc-gcc -o hello-world hello-world.c`
+# Install some native build-time tools
+RUN install-debian scons
 
-Standard bintools are available by adding an `rpxc-` prefix.
+# Install raspbian development libraries
+RUN install-raspbian libboost-dev-all
+```
 
----
+### Name your image with an RPXC_IMAGE variable and build the image
 
-`rpxc make`
+```sh
+export RPXC_IMAGE=my-custom-rpxc-image
+docker build -t $RPXC_IMAGE .
+```
 
-Build the kernel from [raspberrypi/linux](https://github.com/raspberrypi/linux).
-The CROSS_COMPILE and ARCH flags are automatically set.
+### With RPXC_IMAGE set, rpxc will automatically use your new image.
 
----
+```sh
+# These are typical cross-compilation flags to pass to configure.
+# Note the use of single quotes in the shell command-line. We want the
+# variables to be interpolated in the container, not in the host system.
+rpxc sh -c 'CFLAGS=--sysroot=$SYSROOT ./configure --host=$HOST'
+rpxc make
+```
 
-`rpxc bash -c 'find . -name \*.o | sort > objects.txt'`
+Another way to achieve this is to create a shell script.
 
-Note that commands are executed verbatim. If you require any shell processing for environment variable expansion or redirection, please use `bash -c 'command args...'`.
+```sh
+#!/bin/sh
+CFLAGS=--sysroot=$SYSROOT ./configure --host=$HOST
+make
+```
 
----
-
-More examples can be found in the [examples directory](examples).
+And call it as `rpxc ./mymake.sh`

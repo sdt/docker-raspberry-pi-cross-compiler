@@ -1,0 +1,15 @@
+#!/bin/sh
+
+set -e
+
+if [ $# -eq 0 ]; then
+    echo usage: install-debian [--update] package [packages...]
+    exit 1
+fi
+
+if [ "$1" = "--update" ]; then
+    shift
+    apt-get update
+fi
+
+DEBIAN_FRONTEND=noninteractive apt-get install -y "$@"

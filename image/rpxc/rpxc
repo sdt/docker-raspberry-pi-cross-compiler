@@ -49,6 +49,39 @@ command:update() {
     command:update-script
 }
 
+install-packages() {
+    local installer=$1
+    shift
+
+    CONTAINER=rpxc-temp-$$
+    docker rm -f $CONTAINER >/dev/null 2>/dev/null
+    set -e
+    docker run -ti --name $CONTAINER $FINAL_IMAGE $installer "$@"
+    docker commit $CONTAINER $FINAL_IMAGE
+    docker rm -f $CONTAINER
+    echo Updated image: $FINAL_IMAGE.
+}
+
+command:install-debian() {
+    install-packages install-debian "$@"
+}
+
+help:install-debian() {
+    echo usage: rpxc install-debian [--update] package \[packages...\]
+    echo Install native debian packages into $FINAL_IMAGE .
+    echo Use --update to run apt-get update beforehand.
+}
+
+command:install-raspbian() {
+    install-packages install-raspbian "$@"
+}
+
+help:install-raspbian() {
+    echo usage: rpxc install-raspbian [--update] package \[packages...\]
+    echo Install raspbian packages into the sysroot of $FINAL_IMAGE .
+    echo Use --update to run apt-get update beforehand.
+}
+
 help:update() {
     echo Pull the latest $FINAL_IMAGE, and then update $0 from that.
 }
@@ -70,11 +103,13 @@ usage: rpxc command [args]
 By default, runs the given command in an rpxc container.
 
 Builtin commands:
+    install-debian
+    install-raspbian
     update-image
     update-script
     update
 
-For command help use: $0 help <command>
+For command-specific help: rpxc help <command>
 ENDHELP
     fi
 }
@@ -129,7 +164,7 @@ FINAL_CONFIG=${ARG_CONFIG-${RPXC_CONFIG-$DEFAULT_CONFIG}}
 [[ -f "$FINAL_CONFIG" ]] && source "$FINAL_CONFIG"
 
 # Set the docker image
-DEFAULT_IMAGE=sdt4docker/raspberry-pi-cross-compiler
+DEFAULT_IMAGE=sdthirlwall/raspberry-pi-cross-compiler
 FINAL_IMAGE=${ARG_IMAGE-${RPXC_IMAGE-$DEFAULT_IMAGE}}
 
 # Set the docker run extra args (if any)
@@ -180,7 +215,7 @@ docker run -i -t --rm \
 #
 #   To install the rpxc helper, run the following commands:
 #
-#       docker run sdt4docker/raspberry-pi-cross-compiler > rpxc
+#       docker run sdthirlwall/raspberry-pi-cross-compiler > rpxc
 #       chmod +x rpxc
 #
 #   You may then wish to move rpxc to somewhere in your path.

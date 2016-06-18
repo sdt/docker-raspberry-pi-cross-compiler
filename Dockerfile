@@ -1,49 +1,50 @@
-FROM ubuntu:trusty
-MAINTAINER Stephen Thirlwall <sdt@dr.com>
+FROM debian:jessie
+
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
+ && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+        automake \
+        cmake \
+        curl \
+        g++ \
+        git \
+        make \
+        runit \
+        xz-utils
 
 # Here is where we hardcode the toolchain decision.
 ENV HOST=arm-linux-gnueabihf \
-    TOOLCHAIN=gcc-linaro-arm-linux-gnueabihf-raspbian
+    TOOLCHAIN=gcc-linaro-arm-linux-gnueabihf-raspbian-x64 \
+    RPXC_ROOT=/rpxc
 
-# I'd put all these into the same ENV command, but you cannot define and use
-# a var in the same command.
+#    TOOLCHAIN=arm-rpi-4.9.3-linux-gnueabihf \
+#    TOOLCHAIN=gcc-linaro-arm-linux-gnueabihf-raspbian-x64 \
+
+WORKDIR $RPXC_ROOT
+RUN curl -L https://github.com/raspberrypi/tools/tarball/master \
+  | tar --wildcards --strip-components 3 -xzf - "*/arm-bcm2708/$TOOLCHAIN/"
+
 ENV ARCH=arm \
-    TOOLCHAIN_ROOT=/rpxc/$TOOLCHAIN \
-    CROSS_COMPILE=/rpxc/$TOOLCHAIN/bin/$HOST-
-ENV AS=${CROSS_COMPILE}as \
-    AR=${CROSS_COMPILE}ar \
-    CC=${CROSS_COMPILE}gcc \
-    CPP=${CROSS_COMPILE}cpp \
-    CXX=${CROSS_COMPILE}g++ \
-    LD=${CROSS_COMPILE}ld
+    CROSS_COMPILE=$RPXC_ROOT/bin/$HOST- \
+    PATH=$RPXC_ROOT/bin:$PATH \
+    QEMU_PATH=/usr/bin/qemu-arm-static \
+    QEMU_EXECVE=1 \
+    SYSROOT=$RPXC_ROOT/sysroot
 
-# 1. Install debian packages.
-# 2. Fetch the raspberrypi/tools tarball from github.
-# 3. Extract only the toolchain we will be using.
-# 4. Create rpxc- prefixed symlinks in /usr/local/bin (eg. rpxc-gcc, rpxc-ld)
-WORKDIR /rpxc
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        automake \
-        bc \
-        bison \
-        cmake \
-        curl \
-        flex \
-        lib32stdc++6 \
-        lib32z1 \
-        ncurses-dev \
-        runit \
- &&  curl -s -L https://github.com/raspberrypi/tools/tarball/master \
-     | tar --wildcards --strip-components 2 -xzf - "*/arm-bcm2708/$TOOLCHAIN/" \
- && mkdir -p /usr/local/bin \
- && for i in ${CROSS_COMPILE}*; do \
-        ln -sf $i /usr/local/bin/rpxc-${i#$CROSS_COMPILE}; \
-    done \
- ;
+WORKDIR $SYSROOT
+RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.2015.05.05.tar.xz \
+    | tar -xJf - \
+ && curl -Ls https://github.com/resin-io-projects/armv7hf-debian-qemu/raw/master/qemu-arm-static \
+    > $SYSROOT/$QEMU_PATH \
+ && chmod +x $SYSROOT/$QEMU_PATH
+
+COPY image/ /
+
+RUN rpi-run apt-get update \
+ && rpi-run DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
+ && rpi-run DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
+ && install-raspbian libc6-dev symlinks
 
 WORKDIR /build
-ENTRYPOINT ["/rpxc/entrypoint.sh"]
-
-COPY imagefiles/entrypoint.sh imagefiles/rpxc /rpxc/
-
+ENTRYPOINT [ "/rpxc/entrypoint.sh" ]
