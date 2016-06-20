@@ -1,0 +1,3 @@
+[submodule "examples/axel/repo"]
+	path = example/axel/repo
+	url = https://github.com/eribertomota/axel.git
