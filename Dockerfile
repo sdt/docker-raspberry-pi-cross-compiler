@@ -41,7 +41,8 @@ RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.
 
 COPY image/ /
 
-RUN rpi-run apt-get update \
+RUN mkdir -p $SYSROOT/build \
+ && rpi-run apt-get update \
  && rpi-run DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
  && rpi-run DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
  && install-raspbian libc6-dev symlinks

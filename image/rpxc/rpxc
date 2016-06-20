@@ -205,6 +205,7 @@ esac
 #
 docker run -i -t --rm \
     -v $PWD:/build \
+    -v $PWD:/rpxc/sysroot/build \
     $USER_IDS \
     $FINAL_ARGS \
     $FINAL_IMAGE "$@"
