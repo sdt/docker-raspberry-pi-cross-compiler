@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
-export RPXC_IMAGE=rpxc-axel
+source config.sh
 docker build -t $RPXC_IMAGE .
