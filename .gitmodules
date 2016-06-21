@@ -1,3 +1,6 @@
 [submodule "examples/axel/repo"]
 	path = example/axel/repo
 	url = https://github.com/eribertomota/axel.git
+[submodule "example/qtbase/repo"]
+	path = example/qtbase/repo
+	url = https://github.com/qtproject/qtbase.git
