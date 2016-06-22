@@ -9,8 +9,8 @@ fi
 
 if [ "$1" = "--update" ]; then
     shift
-    rpi-run apt-get update
+    rpdo apt-get update
 fi
 
-rpi-run DEBIAN_FRONTEND=noninteractive apt-get install -y "$@"
-rpi-run symlinks -cors /
+rpdo DEBIAN_FRONTEND=noninteractive apt-get install -y "$@"
+rpdo symlinks -cors /
