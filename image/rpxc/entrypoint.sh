@@ -14,18 +14,18 @@ fi
 # created are owned by that user. Without this they are all owned by root.
 # If we are running from boot2docker, this is not necessary, and you end up not
 # being able to write to the volume.
-# The rpxc script sets the BUILDER_UID and BUILDER_GID vars.
-if [[ -n $BUILDER_UID ]] && [[ -n $BUILDER_GID ]]; then
+# The rpxc script sets the RPXC_UID and RPXC_GID vars.
+if [[ -n $RPXC_UID ]] && [[ -n $RPXC_GID ]]; then
 
-    BUILDER_USER=rpxc-user
-    BUILDER_GROUP=rpxc-group
-    BUILDER_HOME=/home/$BUILDER_USER
+    RPXC_USER=rpxc-user
+    RPXC_GROUP=rpxc-group
+    RPXC_HOME=/home/$RPXC_USER
 
-    groupadd -o -g $BUILDER_GID $BUILDER_GROUP 2> /dev/null
-    useradd -o -m -d $BUILDER_HOME -g $BUILDER_GID -u $BUILDER_UID $BUILDER_USER 2> /dev/null
+    groupadd -o -g $RPXC_GID $RPXC_GROUP 2> /dev/null
+    useradd -o -m -d $RPXC_HOME -g $RPXC_GID -u $RPXC_UID $RPXC_USER 2> /dev/null
 
     # Run the command as the specified user/group.
-    HOME=$BUILDER_HOME exec chpst -u :$BUILDER_UID:$BUILDER_GID "$@"
+    HOME=$RPXC_HOME exec chpst -u :$RPXC_UID:$RPXC_GID "$@"
 else
     # Just run the command as root.
     exec "$@"

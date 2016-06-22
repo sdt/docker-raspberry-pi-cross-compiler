@@ -172,7 +172,7 @@ FINAL_ARGS=${ARG_ARGS-${RPXC_ARGS}}
 
 # If we are not running via boot2docker
 if [ -z $DOCKER_HOST ]; then
-    USER_IDS="-e BUILDER_UID=$( id -u ) -e BUILDER_GID=$( id -g )"
+    USER_IDS="-e RPXC_UID=$( id -u ) -e RPXC_GID=$( id -g )"
 fi
 
 #------------------------------------------------------------------------------
