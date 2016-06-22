@@ -7,10 +7,12 @@ RUN apt-get update \
         automake \
         cmake \
         curl \
+        fakeroot \
         g++ \
         git \
         make \
         runit \
+        sudo \
         xz-utils
 
 # Here is where we hardcode the toolchain decision.
