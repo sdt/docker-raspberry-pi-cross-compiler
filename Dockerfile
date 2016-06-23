@@ -39,15 +39,18 @@ RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.
     | tar -xJf - \
  && curl -Ls https://github.com/resin-io-projects/armv7hf-debian-qemu/raw/master/qemu-arm-static \
     > $SYSROOT/$QEMU_PATH \
- && chmod +x $SYSROOT/$QEMU_PATH
+ && chmod +x $SYSROOT/$QEMU_PATH \
+ && mkdir -p $SYSROOT/build \
+ && chroot $SYSROOT $QEMU_PATH /bin/sh -c '\
+        apt-get update \
+        && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
+        && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
+        && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+                libc6-dev \
+                symlinks \
+        && symlinks -cors /'
 
 COPY image/ /
-
-RUN mkdir -p $SYSROOT/build \
- && rpdo apt-get update \
- && rpdo DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
- && rpdo DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
- && install-raspbian libc6-dev symlinks
 
 WORKDIR /build
 ENTRYPOINT [ "/rpxc/entrypoint.sh" ]
