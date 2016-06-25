@@ -32,12 +32,16 @@ help:update-image() {
 }
 
 command:update-script() {
-    if cmp -s <( docker run $FINAL_IMAGE ) $0; then
-        echo $0 is up to date
-    else
-        echo -n Updating $0 '... '
-        docker run $FINAL_IMAGE > $0 && echo ok
+    local newfile=$( mktemp )
+    if docker run $FINAL_IMAGE > $newfile; then
+        if [[ -s $newfile ]]; then
+            if ! cmp -s $0 $newfile; then
+                echo -n Updating $0 '... '
+                mv $newfile $0 && echo ok
+            fi
+        fi
     fi
+    rm -f $newfile
 }
 
 help:update-image() {
@@ -45,8 +49,7 @@ help:update-image() {
 }
 
 command:update() {
-    command:update-image
-    command:update-script
+    command:update-image && command:update-script
 }
 
 install-packages() {
