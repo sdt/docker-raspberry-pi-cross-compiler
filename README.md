@@ -13,6 +13,7 @@ Please raise any issues on the [GitHub issue tracker](https://github.com/sdt/doc
 * [Usage](#usage)
 * [Configuration](#configuration)
 * [Custom Images](#custom-images)
+* [Examples](#examples)
 
 ## Features
 
@@ -141,3 +142,7 @@ make
 ```
 
 And call it as `rpxc ./mymake.sh`
+
+## Examples
+
+See the [examples directory](example/) for some real examples.
