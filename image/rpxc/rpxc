@@ -37,7 +37,9 @@ command:update-script() {
         if [[ -s $newfile ]]; then
             if ! cmp -s $0 $newfile; then
                 echo -n Updating $0 '... '
-                mv $newfile $0 && echo ok
+                chmod 755 $newfile && mv $newfile $0 && echo ok
+            else
+                echo $0 is up to date.
             fi
         fi
     fi
