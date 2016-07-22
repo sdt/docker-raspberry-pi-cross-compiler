@@ -5,7 +5,7 @@ downstream image that uses rpxc as a base.
 
 ## Step 1 - create a downstream image.
 
-Use sdt4docker/raspberry-pi-cross-compiler as a base, and make any changes you
+Use sdthirlwall/raspberry-pi-cross-compiler:legacy-trusty as a base, and make any changes you
 like. Avoid changing the ENTRYPOINT directive unless you know what you're doing - the rpxc script relies on this.
 
 The example [Dockerfile](Dockerfile) and [build.sh](build.sh) in this directory create an image called rpxc-with-git which installs git.

@@ -2,7 +2,7 @@
 
 Installs [the Raspberry Pi cross-compilation toolchain](https://github.com/raspberrypi/tools) onto the [ubuntu:trusty Docker image](https://registry.hub.docker.com/_/ubuntu/).
 
-This project is available as [sdt4docker/raspberry-pi-cross-compiler](https://registry.hub.docker.com/u/sdt4docker/raspberry-pi-cross-compiler/) on [Docker Hub](https://hub.docker.com/), and as [sdt/docker-raspberry-pi-cross-compiler](https://github.com/sdt/docker-raspberry-pi-cross-compiler) on [GitHub](https://github.com).
+This project is available as [sdthirlwall/raspberry-pi-cross-compiler:legacy-trusty](https://registry.hub.docker.com/u/sdthirlwall/raspberry-pi-cross-compiler/) on [Docker Hub](https://hub.docker.com/), and as [sdt/docker-raspberry-pi-cross-compiler](https://github.com/sdt/docker-raspberry-pi-cross-compiler) on [GitHub](https://github.com).
 
 Please raise any issues on the [GitHub issue tracker](https://github.com/sdt/docker-raspberry-pi-cross-compiler/issues) as I don't get notified about Docker Hub comments.
 
@@ -24,7 +24,7 @@ To install the helper script, run the image with no arguments, and redirect the 
 
 eg.
 ```
-docker run sdt4docker/raspberry-pi-cross-compiler > rpxc
+docker run sdthirlwall/raspberry-pi-cross-compiler:legacy-trusty > rpxc
 chmod +x rpxc
 mv rpxc ~/bin/
 ```
@@ -75,7 +75,7 @@ Default: `~/.rpxc`
 
 The docker image to run.
 
-Default: sdt4docker/raspberry-pi-cross-compiler
+Default: sdthirlwall/raspberry-pi-cross-compiler:legacy-trusty
 
 ### RPXC_ARGS / --args &lt;docker-run-args&gt;
 
