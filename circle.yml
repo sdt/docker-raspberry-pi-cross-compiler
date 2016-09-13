@@ -17,6 +17,7 @@ dependencies:
 
 test:
   override:
-    - pwd
-    - cd example/axel ; pwd
-    - pwd
+    - cd example/axel ; ./01-build-image.sh
+    - cd example/axel ; ./02-configure.sh
+    - cd example/axel ; ./03-make.sh
+    - cd example/axel ; ./04-tar.sh
