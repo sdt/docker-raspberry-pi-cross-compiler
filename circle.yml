@@ -1,0 +1,16 @@
+machine:
+    RPXC_IMAGE: rpxc:base
+
+  services:
+    - docker
+
+dependencies:
+  override:
+    - ./build.sh
+    - docker run $RPXC_IMAGE > /usr/local/bin/rpxc
+    - chmod +x /usr/local/bin/rpxc
+    - cd example ; ./00-get-repo.sh
+
+test:
+  override:
+    - cd example ; ./01-build-image.sh
