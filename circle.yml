@@ -13,8 +13,8 @@ dependencies:
     - printenv | sort
     - docker run --rm $RPXC_IMAGE > $RPXC_SCRIPT
     - chmod +x $RPXC_SCRIPT
-    - cd example ; ./00-get-repo.sh
+    - cd example/axel ; ./00-get-repo.sh
 
 test:
   override:
-    - cd example ; ./01-build-image.sh
+    - cd example/axel ; ./01-build-image.sh
