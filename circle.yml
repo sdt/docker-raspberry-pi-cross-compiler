@@ -1,4 +1,5 @@
 machine:
+  environment:
     RPXC_IMAGE: rpxc:base
 
   services:
