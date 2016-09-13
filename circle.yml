@@ -1,6 +1,7 @@
 machine:
   environment:
-    RPXC_IMAGE: rpxc:base
+    RPXC_IMAGE: "rpxc:base"
+    RPXC_SCRIPT: "~/bin/rpxc"
 
   services:
     - docker
@@ -8,8 +9,8 @@ machine:
 dependencies:
   override:
     - ./build.sh
-    - docker run $RPXC_IMAGE > /usr/local/bin/rpxc
-    - chmod +x /usr/local/bin/rpxc
+    - docker run $RPXC_IMAGE > $RPXC_SCRIPT
+    - chmod +x $RPXC_SCRIPT
     - cd example ; ./00-get-repo.sh
 
 test:
