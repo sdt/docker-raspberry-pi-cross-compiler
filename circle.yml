@@ -1,6 +1,5 @@
 machine:
   environment:
-    #RPXC_IMAGE: "rpxc:base"
     RPXC_IMAGE: sdthirlwall/raspberry-pi-cross-compiler
     RPXC_SCRIPT: "/home/ubuntu/bin/rpxc"
 
@@ -9,8 +8,7 @@ machine:
 
 dependencies:
   override:
-    #- ./build.sh
-    - printenv | sort
+    - ./build.sh
     - docker run --rm $RPXC_IMAGE > $RPXC_SCRIPT
     - chmod +x $RPXC_SCRIPT
     - cd example/axel ; ./00-get-repo.sh
