@@ -15,4 +15,4 @@ dependencies:
 test:
   override:
     - ./example/run-example.sh ./example/axel
-    - ./example/run-example.sh ./example/qtbase
+    #- ./example/run-example.sh ./example/qtbase
