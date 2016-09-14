@@ -1,0 +1,18 @@
+machine:
+  environment:
+    RPXC_IMAGE: sdthirlwall/raspberry-pi-cross-compiler
+    RPXC_SCRIPT: "/home/ubuntu/bin/rpxc"
+
+  services:
+    - docker
+
+dependencies:
+  override:
+    - ./build.sh
+    - docker run --rm $RPXC_IMAGE > $RPXC_SCRIPT
+    - chmod +x $RPXC_SCRIPT
+
+test:
+  override:
+    - ./example/run-example.sh ./example/axel
+    #- ./example/run-example.sh ./example/qtbase

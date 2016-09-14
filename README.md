@@ -1,3 +1,4 @@
+[![CircleCI](https://circleci.com/gh/sdt/docker-raspberry-pi-cross-compiler.svg?style=svg)](https://circleci.com/gh/sdt/docker-raspberry-pi-cross-compiler)
 # Raspberry Pi Cross-Compiler in a Docker Container
 
 An easy-to-use  all-in-one cross compiler for the Raspberry Pi.
