@@ -15,4 +15,10 @@ dependencies:
 test:
   override:
     - ./example/run-example.sh ./example/axel
-    #- ./example/run-example.sh ./example/qtbase
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push $RPXC_IMAGE
