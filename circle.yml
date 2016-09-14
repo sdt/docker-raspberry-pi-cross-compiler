@@ -11,11 +11,8 @@ dependencies:
     - ./build.sh
     - docker run --rm $RPXC_IMAGE > $RPXC_SCRIPT
     - chmod +x $RPXC_SCRIPT
-    - cd example/axel ; ./00-get-repo.sh
 
 test:
   override:
-    - cd example/axel ; ./01-build-image.sh
-    - cd example/axel ; ./02-configure.sh
-    - cd example/axel ; ./03-make.sh
-    - cd example/axel ; ./04-tar.sh
+    - ./example/run-example.sh ./example/axel
+    - ./example/run-example.sh ./example/qtbase
