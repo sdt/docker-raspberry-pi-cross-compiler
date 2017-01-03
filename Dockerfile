@@ -42,7 +42,9 @@ RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.
  && chmod +x $SYSROOT/$QEMU_PATH \
  && mkdir -p $SYSROOT/build \
  && chroot $SYSROOT $QEMU_PATH /bin/sh -c '\
-        apt-get update \
+        echo "deb http://archive.raspbian.org/raspbian jessie firmware" \
+            >> /etc/apt/sources.list \
+        && apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
         && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
         && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
