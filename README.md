@@ -146,4 +146,4 @@ And call it as `rpxc ./mymake.sh`
 
 ## Examples
 
-See the [examples directory](example/) for some real examples.
+See the [examples directory](https://github.com/sdt/docker-raspberry-pi-cross-compiler/tree/master/example) for some real examples.
