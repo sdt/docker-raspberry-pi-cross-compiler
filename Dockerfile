@@ -37,7 +37,7 @@ ENV ARCH=arm \
 WORKDIR $SYSROOT
 RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.2015.05.05.tar.xz \
     | tar -xJf - \
- && curl -Ls https://github.com/resin-io-projects/armv7hf-debian-qemu/raw/master/qemu-arm-static \
+ && curl -Ls https://github.com/resin-io-projects/armv7hf-debian-qemu/raw/master/bin/qemu-arm-static \
     > $SYSROOT/$QEMU_PATH \
  && chmod +x $SYSROOT/$QEMU_PATH \
  && mkdir -p $SYSROOT/build \
