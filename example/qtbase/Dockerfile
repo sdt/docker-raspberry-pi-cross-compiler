@@ -1,4 +1,4 @@
-FROM sdthirlwall/raspberry-pi-cross-compiler
+FROM sdthirlwall/raspberry-pi-cross-compiler:stretch
 
 # axel uses gettext in the build context
 RUN install-debian --update build-essential python
