@@ -5,7 +5,7 @@
 
 if [[ $# == 0 ]]; then
     # Presumably the image has been run directly, so help the user get started.
-    cat /rpxc/rpxc
+    cat /rpxc/rpxc | sed -e s/\\\$RPXC_DISTRO/$RPXC_DISTRO/g
     exit 0
 fi
 

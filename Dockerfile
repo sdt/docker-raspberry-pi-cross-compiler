@@ -1,4 +1,10 @@
-FROM debian:stretch
+ARG BASE_IMAGE
+
+FROM $BASE_IMAGE
+
+ARG BASE_IMAGE
+ARG DISTRO
+ARG SYSROOT_URL
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
@@ -29,13 +35,14 @@ RUN curl -L https://github.com/raspberrypi/tools/tarball/master \
 
 ENV ARCH=arm \
     CROSS_COMPILE=$RPXC_ROOT/bin/$HOST- \
+    RPXC_DISTRO=$DISTRO \
     PATH=$RPXC_ROOT/bin:$PATH \
     QEMU_PATH=/usr/bin/qemu-arm-static \
     QEMU_EXECVE=1 \
     SYSROOT=$RPXC_ROOT/sysroot
 
 WORKDIR $SYSROOT
-RUN curl -Ls https://github.com/schachr/docker-raspbian-stretch/raw/master/raspbian.image.tar.xz \
+RUN curl -Ls "$SYSROOT_URL" \
     | tar -xJf - \
  && curl -Ls https://github.com/resin-io-projects/armv7hf-debian-qemu/raw/master/bin/qemu-arm-static \
     > $SYSROOT/$QEMU_PATH \
@@ -44,7 +51,7 @@ RUN curl -Ls https://github.com/schachr/docker-raspbian-stretch/raw/master/raspb
  && mknod -m 666 $SYSROOT/dev/null    c 1 3 \
  && mknod -m 666 $SYSROOT/dev/random  c 1 8 \
  && mknod -m 666 $SYSROOT/dev/urandom c 1 9 \
- && echo "deb http://archive.raspbian.org/raspbian stretch firmware" \
+ && echo "deb http://archive.raspbian.org/raspbian $DISTRO firmware" \
     >> $SYSROOT/etc/apt/sources.list \
  && chroot $SYSROOT $QEMU_PATH /bin/sh -c '\
         apt-get update \

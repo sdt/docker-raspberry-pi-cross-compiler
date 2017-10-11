@@ -169,7 +169,7 @@ FINAL_CONFIG=${ARG_CONFIG-${RPXC_CONFIG-$DEFAULT_CONFIG}}
 [[ -f "$FINAL_CONFIG" ]] && source "$FINAL_CONFIG"
 
 # Set the docker image
-DEFAULT_IMAGE=sdthirlwall/raspberry-pi-cross-compiler:stretch
+DEFAULT_IMAGE=sdthirlwall/raspberry-pi-cross-compiler:$RPXC_DISTRO
 FINAL_IMAGE=${ARG_IMAGE-${RPXC_IMAGE-$DEFAULT_IMAGE}}
 
 # Set the docker run extra args (if any)
