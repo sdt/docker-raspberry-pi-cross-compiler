@@ -1,11 +1,13 @@
 #!/bin/bash -e
 
-if [[ $# != 1 ]]; then
-    echo usage: $0 example-dir 1>&2
+if [[ ! ( $# == 2 && ( $1 == 'jessie' || $1 == 'stretch' ) )  ]]; then
+    echo usage: $0 jessie\|stretch example-dir 1>&2
     exit 1
 fi
 
-cd $1
+export RPXC_DISTRO=$1
+
+cd $2
 ./00-get-repo.sh
 ./01-build-image.sh
 ./02-configure.sh
