@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stretch
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
@@ -35,16 +35,19 @@ ENV ARCH=arm \
     SYSROOT=$RPXC_ROOT/sysroot
 
 WORKDIR $SYSROOT
-RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.2015.05.05.tar.xz \
+RUN curl -Ls https://github.com/schachr/docker-raspbian-stretch/raw/master/raspbian.image.tar.xz \
     | tar -xJf - \
  && curl -Ls https://github.com/resin-io-projects/armv7hf-debian-qemu/raw/master/bin/qemu-arm-static \
     > $SYSROOT/$QEMU_PATH \
  && chmod +x $SYSROOT/$QEMU_PATH \
  && mkdir -p $SYSROOT/build \
+ && mknod -m 666 $SYSROOT/dev/null    c 1 3 \
+ && mknod -m 666 $SYSROOT/dev/random  c 1 8 \
+ && mknod -m 666 $SYSROOT/dev/urandom c 1 9 \
+ && echo "deb http://archive.raspbian.org/raspbian stretch firmware" \
+    >> $SYSROOT/etc/apt/sources.list \
  && chroot $SYSROOT $QEMU_PATH /bin/sh -c '\
-        echo "deb http://archive.raspbian.org/raspbian jessie firmware" \
-            >> /etc/apt/sources.list \
-        && apt-get update \
+        apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
         && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
         && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \

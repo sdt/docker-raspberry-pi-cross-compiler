@@ -2,7 +2,7 @@ machine:
   environment:
     RPXC_IMAGE: sdthirlwall/raspberry-pi-cross-compiler
     RPXC_SCRIPT: "/home/ubuntu/bin/rpxc"
-    RPXC_DISTRO: jessie
+    RPXC_DISTRO: stretch
 
   services:
     - docker
