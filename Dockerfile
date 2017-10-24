@@ -1,5 +1,12 @@
 FROM debian:stretch
 
+WORKDIR $SYSROOT
+COPY dev.tar.gz /tmp
+RUN mkdir /dev/ \
+ && ls -alF $SYSROOT/dev \
+ && tar -xzvf /tmp/dev.tar.gz \
+ && ls -alF $SYSROOT/dev
+
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
  && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
@@ -36,7 +43,9 @@ ENV ARCH=arm \
 
 WORKDIR $SYSROOT
 COPY dev.tar.gz /tmp
-RUN tar -xzvf /tmp/dev.tar.gz \
+RUN mkdir /dev/ \
+ && ls -alF $SYSROOT/dev \
+ && tar -xzvf /tmp/dev.tar.gz \
  && ls -alF $SYSROOT/dev
 
 RUN curl -Ls https://github.com/schachr/docker-raspbian-stretch/raw/master/raspbian.image.tar.xz \
