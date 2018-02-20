@@ -13,11 +13,12 @@ RUN apt-get update \
         make \
         runit \
         sudo \
+        pkg-config \
         xz-utils
 
 # Here is where we hardcode the toolchain decision.
 ENV HOST=arm-linux-gnueabihf \
-    TOOLCHAIN=gcc-linaro-arm-linux-gnueabihf-raspbian-x64 \
+    TOOLCHAIN=arm-rpi-4.9.3-linux-gnueabihf \
     RPXC_ROOT=/rpxc
 
 #    TOOLCHAIN=arm-rpi-4.9.3-linux-gnueabihf \
@@ -25,7 +26,7 @@ ENV HOST=arm-linux-gnueabihf \
 
 WORKDIR $RPXC_ROOT
 RUN curl -L https://github.com/raspberrypi/tools/tarball/master \
-  | tar --wildcards --strip-components 3 -xzf - "*/arm-bcm2708/$TOOLCHAIN/"
+  | tar --wildcards --strip-components 3 -xzf - "*/arm-bcm2708/$TOOLCHAIN/" "*/${HOST}-pkg-config"
 
 ENV ARCH=arm \
     CROSS_COMPILE=$RPXC_ROOT/bin/$HOST- \
@@ -54,6 +55,12 @@ RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.
         && symlinks -cors /'
 
 COPY image/ /
+
+RUN tar -C ${RPXC_ROOT}/${HOST}/sysroot -c . | tar -C ${SYSROOT} -x ./usr ./lib ./sbin \
+	&& mv ${RPXC_ROOT}/${HOST}/sysroot ${RPXC_ROOT}/${HOST}/sysroot-toolchain \
+	&& rm ${SYSROOT}/lib/libstdc++.so.6.0.20-gdb.py \
+	&& ln -s ${SYSROOT} ${RPXC_ROOT}/${HOST}/sysroot \
+	&& ln -s `which pkg-config` ${RPXC_ROOT}/bin/${HOST}-pkg-config-real
 
 WORKDIR /build
 ENTRYPOINT [ "/rpxc/entrypoint.sh" ]
