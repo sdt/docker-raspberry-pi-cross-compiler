@@ -13,11 +13,12 @@ RUN apt-get update \
         make \
         runit \
         sudo \
-        xz-utils
+        xz-utils \
+        bsdtar
 
 # Here is where we hardcode the toolchain decision.
 ENV HOST=arm-linux-gnueabihf \
-    TOOLCHAIN=gcc-linaro-arm-linux-gnueabihf-raspbian-x64 \
+    TOOLCHAIN=arm-rpi-4.9.3-linux-gnueabihf \
     RPXC_ROOT=/rpxc
 
 #    TOOLCHAIN=arm-rpi-4.9.3-linux-gnueabihf \
@@ -35,8 +36,8 @@ ENV ARCH=arm \
     SYSROOT=$RPXC_ROOT/sysroot
 
 WORKDIR $SYSROOT
-RUN curl -Ls https://downloads.raspberrypi.org/raspbian_lite/root.tar.xz \
-| tar -xJf -
+RUN curl -Ls https://downloads.raspberrypi.org/raspbian_lite/archive/2018-04-19-15:24/root.tar.xz \
+| bsdtar -xJf -
 ADD https://github.com/resin-io-projects/armv7hf-debian-qemu/raw/master/bin/qemu-arm-static $SYSROOT/$QEMU_PATH
 
 RUN chmod +x $SYSROOT/$QEMU_PATH \
