@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:stable
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
@@ -42,7 +42,7 @@ RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.
  && chmod +x $SYSROOT/$QEMU_PATH \
  && mkdir -p $SYSROOT/build \
  && chroot $SYSROOT $QEMU_PATH /bin/sh -c '\
-        echo "deb http://archive.raspbian.org/raspbian jessie firmware" \
+        echo "deb http://archive.raspbian.org/raspbian stable firmware" \
             >> /etc/apt/sources.list \
         && apt-get update \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
