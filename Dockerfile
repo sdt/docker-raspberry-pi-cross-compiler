@@ -51,6 +51,7 @@ RUN curl -Ls https://github.com/sdhibit/docker-rpi-raspbian/raw/master/raspbian.
         && DEBIAN_FRONTEND=noninteractive apt-get install -y \
                 libc6-dev \
                 symlinks \
+                libraspberrypi-dev \
         && symlinks -cors /'
 
 COPY image/ /
