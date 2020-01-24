@@ -47,7 +47,7 @@ RUN chroot $SYSROOT $QEMU_PATH /bin/sh -c '\
         echo "deb http://archive.raspbian.org/raspbian stretch firmware" \
             >> /etc/apt/sources.list \
         && apt-get update \
-        && sudo apt-mark hold \
+        && apt-mark hold \
      raspberrypi-bootloader raspberrypi-kernel raspberrypi-sys-mods raspi-config \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils \
         && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure apt-utils \
